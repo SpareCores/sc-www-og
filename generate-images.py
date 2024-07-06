@@ -9,6 +9,7 @@ IMAGE_FOLDER = os.environ.get("IMAGE_FOLDER", default="images")
 os.makedirs(IMAGE_FOLDER, exist_ok=True)
 
 BROWSER = os.environ.get("BROWSER", default="chrome")
+SC_WWW_URL = os.environ.get("SC_WWW_URL", default="https://sparecores.com")
 
 # list all servers
 engine = create_engine(f"sqlite:///{sc_data.db.path}")
@@ -25,6 +26,6 @@ for server in servers:
     if not os.path.exists(os.path.join(folder, filename)):
         hti.output_path = folder
         hti.screenshot(
-            url=f"http://localhost:4200/og/{server[0]}/{server[1]}",
+            url=f"{SC_WWW_URL}/og/{server[0]}/{server[1]}",
             save_as=filename,
         )
