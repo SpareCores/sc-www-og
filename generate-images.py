@@ -23,7 +23,13 @@ servers = session.exec(select(Server.vendor_id, Server.api_reference)).all()
 hti = Html2Image(
     browser_executable=BROWSER,
     size=(1200, 630),
-    custom_flags=["--virtual-time-budget=50000"],
+    custom_flags=[
+        "--no-sandbox",
+        "--headless=new",
+        "--hide-scrollbars",
+        "--window-size=1200,630",
+        "--virtual-time-budget=50000",
+    ],
 )
 
 for server in servers:
