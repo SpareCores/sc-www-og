@@ -1,0 +1,51 @@
+name: Generate OG images
+
+on:
+  schedule:
+    - cron: "4 2 * * *"
+  workflow_dispatch:
+
+jobs:
+  generate:
+    permissions:
+      # for the stefanzweifel/git-auto-commit-action step
+      contents: write
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+      - name: Cache uv
+        uses: actions/cache@v4
+        with:
+          key: uv
+          path: ~/.cache/uv
+      - name: Install uv
+        uses: yezz123/setup-uv@v4
+        with:
+          uv-venv: "sc_www_og"
+      - name: Set up Python dependencies
+        run: |
+          uv pip install -r requirements.txt
+
+      - name: Run the generate images script
+        run: python generate-images.py
+
+      - name: Commit changes to the repo
+        uses: stefanzweifel/git-auto-commit-action@v5
+        id: auto-commit-action
+        with:
+          commit_message: "Auto-generate OG images for new servers"
+          file_pattern: "images/*"
+          commit_author: "github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>"
+
+  workflow-keepalive:
+    if: github.event.schedule == '0 * * * *'
+    runs-on: ubuntu-latest
+    permissions:
+      actions: write
+    steps:
+      - uses: liskin/gh-workflow-keepalive@v1
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
