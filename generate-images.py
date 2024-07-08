@@ -1,3 +1,4 @@
+import logging
 import os
 
 import sc_data
@@ -11,6 +12,8 @@ os.makedirs(IMAGE_FOLDER, exist_ok=True)
 BROWSER = os.environ.get("BROWSER", default="chrome")
 SC_WWW_URL = os.environ.get("SC_WWW_URL", default="https://sparecores.com")
 
+logging.basicConfig(level=logging.DEBUG)
+
 # list all servers
 engine = create_engine(f"sqlite:///{sc_data.db.path}")
 session = Session(engine)
@@ -20,10 +23,13 @@ servers = session.exec(select(Server.vendor_id, Server.api_reference)).all()
 hti = Html2Image(browser_executable=BROWSER, size=(1200, 630))
 
 for server in servers:
+    logging.info(server)
     folder = os.path.join(IMAGE_FOLDER, server[0])
     os.makedirs(folder, exist_ok=True)
     filename = f"{server[1]}.png"
-    if not os.path.exists(os.path.join(folder, filename)):
+    if os.path.exists(os.path.join(folder, filename)):
+        logging.debug("Skipping as already generated before.")
+    else:
         hti.output_path = folder
         hti.screenshot(
             url=f"{SC_WWW_URL}/og/{server[0]}/{server[1]}",
