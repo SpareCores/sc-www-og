@@ -17,6 +17,10 @@ jobs:
       - name: Install Chrome
         uses: browser-actions/setup-chrome@v1
         with:
+          ## using newer version results in partial render
+          ## (white/blank space at the bottom of the screen),
+          ## so locking version now.
+          ## later let's look at the newly added `--timeout` flag on the Chrome CLI
           chrome-version: 126
       - run: chrome --version
       - name: Set up Python
