@@ -20,7 +20,11 @@ session = Session(engine)
 servers = session.exec(select(Server.vendor_id, Server.api_reference)).all()
 
 # init screenshot tool
-hti = Html2Image(browser_executable=BROWSER, size=(1200, 630))
+hti = Html2Image(
+    browser_executable=BROWSER,
+    size=(1200, 630),
+    custom_flags=["--no-sandbox" "--headless", "--hide-scrollbars"],
+)
 
 for server in servers:
     logging.info(server)
