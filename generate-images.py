@@ -6,13 +6,13 @@ from html2image import Html2Image
 from sc_crawler.tables import Server
 from sqlmodel import Session, create_engine, select
 
+logging.basicConfig(level=logging.DEBUG)
+
 IMAGE_FOLDER = os.environ.get("IMAGE_FOLDER", default="images")
 os.makedirs(IMAGE_FOLDER, exist_ok=True)
 
 BROWSER = os.environ.get("BROWSER", default="chrome")
 SC_WWW_URL = os.environ.get("SC_WWW_URL", default="https://sparecores.com")
-
-logging.basicConfig(level=logging.DEBUG)
 
 # list all servers
 engine = create_engine(f"sqlite:///{sc_data.db.path}")
