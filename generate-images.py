@@ -24,11 +24,7 @@ hti = Html2Image(
     browser_executable=BROWSER,
     size=(1200, 630),
     custom_flags=[
-        "--no-sandbox",
-        "--headless=new",
-        "--hide-scrollbars",
-        "--window-size=1200,630",
-        "--virtual-time-budget=50000",
+        "--virtual-time-budget=500000",
     ],
 )
 

@@ -16,6 +16,7 @@ jobs:
         uses: actions/checkout@v4
       - name: Install Chrome
         uses: browser-actions/setup-chrome@v1
+      - run: chrome --version
       - name: Set up Python
         uses: actions/setup-python@v5
       - name: Cache uv
