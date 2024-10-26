@@ -62,7 +62,7 @@ for server in servers:
     logging.info(server)
     folder = os.path.join(IMAGE_FOLDER, server[0])
     os.makedirs(folder, exist_ok=True)
-    digest = sha1(repr(servers[3]).encode("utf-8")).hexdigest()
+    digest = sha1(repr(server).encode("utf-8")).hexdigest()
     digest_path = os.path.join(folder, server[1] + ".digest")
     if os.path.exists(digest_path):
         if digest == open(digest_path, "r").read():
