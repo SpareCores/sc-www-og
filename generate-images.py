@@ -71,12 +71,11 @@ for server in servers:
             continue
 
     hti.output_path = folder
-    image_path = os.path.join(folder, server[1] + ".png")
     hti.screenshot(
         url=f"{SC_WWW_URL}/og/{server[0]}/{server[1]}",
-        save_as=image_path,
+        save_as=server[1] + ".png",
     )
-    if not os.path.exists(image_path):
+    if not os.path.exists(os.path.join(folder, server[1] + ".png")):
         logging.error("Failed to capture screenshot.")
         exit(1)
     open(digest_path, "w").write(digest)
