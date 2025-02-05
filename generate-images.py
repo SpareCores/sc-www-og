@@ -1,6 +1,6 @@
-from hashlib import sha1
 import logging
 import os
+from hashlib import sha1
 
 import sc_data
 from html2image import Html2Image
@@ -69,9 +69,14 @@ for server in servers:
         if digest == open(digest_path, "r").read():
             logging.debug("Skipping as already generated before with the same content.")
             continue
+
     hti.output_path = folder
+    image_path = os.path.join(folder, server[1] + ".png")
     hti.screenshot(
         url=f"{SC_WWW_URL}/og/{server[0]}/{server[1]}",
-        save_as=server[1] + ".png",
+        save_as=image_path,
     )
+    if not os.path.exists(image_path):
+        logging.error("Failed to capture screenshot.")
+        exit(1)
     open(digest_path, "w").write(digest)
