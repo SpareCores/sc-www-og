@@ -37,7 +37,7 @@ servers = session.exec(
         Server.description,
         Server.vcpus,
         Server.memory_amount,
-        Server.gpu_count,
+        Server.accelerator_count,
         Server.storage_size,
         max_scores.c.max_score,
     ).join(
@@ -65,10 +65,9 @@ for server in servers:
     os.makedirs(folder, exist_ok=True)
     digest = sha1(repr(server).encode("utf-8")).hexdigest()
     digest_path = os.path.join(folder, server[1] + ".digest")
-    if os.path.exists(digest_path):
-        if digest == open(digest_path, "r").read():
-            logging.debug("Skipping as already generated before with the same content.")
-            continue
+    if os.path.exists(digest_path) and digest == open(digest_path, "r").read():
+        logging.debug("Skipping as already generated before with the same content.")
+        continue
 
     hti.output_path = folder
     hti.screenshot(
